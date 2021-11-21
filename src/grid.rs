@@ -10,12 +10,13 @@ use crate::cell::*;
 /// 
 /// * `rows` - No:of rows of grid
 /// * `cols` - No:of cols of grid
+/// * `grid_matrix` - 2D matrix of cells
 
 #[derive(Debug)]
 pub struct Grid {
     rows: u32,
     cols: u32,
-    grid: Vec<Cell> 
+    grid_matrix: Vec<Cell> 
 }
 
 impl Grid {
@@ -25,6 +26,6 @@ impl Grid {
     /// * `rows` - No:of rows grid have
     /// * `cols` - No:of cols grid have
     pub fn new(rows: u32, cols: u32) -> Self {
-        Grid{rows: rows, cols: cols, grid: Vec::new()}
+        Grid{rows: rows, cols: cols, grid_matrix: Vec::new()}
     }
 }

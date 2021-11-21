@@ -53,6 +53,21 @@ impl Cell {
     pub fn is_linked(&self, cell: &Cell) -> bool {
         self.links.contains_key(&cell.id)
     }
+
+    pub fn get_neighbours(&self) -> Vec<u32> {
+        let mut neighbours: Vec<u32> = Vec::new();
+        if let Some(north) = self.north {
+            neighbours.push(north);
+        }
+        if let Some(south) = self.south {
+            neighbours.push(south);
+        }if let Some(west) = self.west {
+            neighbours.push(west);
+        }if let Some(east) = self.east {
+            neighbours.push(east);
+        }
+        neighbours
+    }
     
 }
 
@@ -102,5 +117,11 @@ mod tests{
         assert_eq!(cell_a.is_linked(&cell_b), true);
         cell_c.unlink(&mut cell_a, true);
         assert_eq!(cell_c.is_linked(&cell_a), false);
+    }
+
+    #[test]
+    fn getting_neighbours() {
+        let cell_a = Cell::new(0, 0, 0);
+        assert_eq!(cell_a.get_neighbours().len(), 0);
     }
 }
