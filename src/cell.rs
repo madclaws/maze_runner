@@ -15,7 +15,7 @@ use std::collections::HashMap;
 /// * links - A mapping of open links (joined by a passage) to other cells.
 #[derive(Debug)]
 pub struct Cell{
-    id: u32,
+    pub id: u32,
     row: u32,
     col: u32,
     north: Option<u32>  ,
@@ -27,7 +27,7 @@ pub struct Cell{
 
 impl Cell {
     pub fn new(id: u32, row: u32, col: u32) -> Cell {
-        Cell{id: id, row: row, col: col, north: None, south: None,
+        Cell{id, row, col, north: None, south: None,
             east: None, west: None, links: HashMap::new()}
     }
 
@@ -45,16 +45,16 @@ impl Cell {
         }
     }
 
-    pub fn get_linked_cells(&self) -> Vec<u32> {
-        let linked_keys: Vec<u32> = self.links.keys().map(|x| *x).collect();
+    fn get_linked_cells(&self) -> Vec<u32> {
+        let linked_keys: Vec<u32> = self.links.keys().copied().collect();
         linked_keys
     }
 
-    pub fn is_linked(&self, cell: &Cell) -> bool {
+    fn is_linked(&self, cell: &Cell) -> bool {
         self.links.contains_key(&cell.id)
     }
 
-    pub fn get_neighbours(&self) -> Vec<u32> {
+    fn get_neighbours(&self) -> Vec<u32> {
         let mut neighbours: Vec<u32> = Vec::new();
         if let Some(north) = self.north {
             neighbours.push(north);
