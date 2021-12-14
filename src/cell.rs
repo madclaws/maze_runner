@@ -13,7 +13,7 @@ use std::collections::HashMap;
 /// * west - Id of the western neighbour of the Cell.
 /// * east - Id of the eastern neighbour of the Cell.
 /// * links - A mapping of open links (joined by a passage) to other cells.
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub struct Cell {
     pub id: i32,
     row: i32,

@@ -5,7 +5,6 @@
 */
 use crate::cell::*;
 use rand::Rng;
-
 /// Grid representation
 ///
 /// * `rows` - No:of rows of grid
@@ -24,7 +23,7 @@ impl Grid {
         Grid {
             rows,
             cols,
-            grid: Grid::prepare_grid(rows, cols),
+            grid: Grid::prepare_grid(rows, cols)
         }
     }
 
@@ -51,13 +50,13 @@ impl Grid {
         for row in 0..self.rows {
             for col in 0..self.cols {
                 let index = self.get_index(row, col) as usize;
-                if row - 1 > 0 {
+                if row - 1 > -1 {
                     self.grid[index].north = Some(self.get_index(row - 1, col));
                 }
                 if row + 1 < self.rows {
                     self.grid[index].south = Some(self.get_index(row + 1, col));
                 }
-                if col - 1 > 0 {
+                if col - 1 > -1 {
                     self.grid[index].west = Some(self.get_index(row, col - 1));
                 }
                 if col + 1 < self.cols {
@@ -65,6 +64,14 @@ impl Grid {
                 }
             }
         }
+    }
+
+    pub fn each_cell(&self) -> IterHelper {
+        self.into_iter()
+    }
+
+    pub fn each_cell_mut(&mut self) -> IterMutHelper {
+        self.into_iter()
     }
 
     /// Creates a 2D matrix of cells
@@ -78,6 +85,105 @@ impl Grid {
         grid
     }
 }
+
+/* 
+ self consuming struct iterator (for later reference)
+ Here we need some field in struct to track the index
+*/
+// impl Iterator for Grid {
+//     type Item = Cell;
+
+//     fn next(&mut self) -> Option<Self::Item> {
+//         if self.iter_index > (self.cols * self.rows) - 1 {
+//             None
+//         } else {
+//             let cell = self.grid[self.iter_index as usize].clone();
+//             self.iter_index += 1;
+//             Some(cell)
+//         }
+//     }
+// }
+
+/* 
+We have to implement an iterator on the grid vector (so that we can iterate through
+each cells without using loops). For that we need to implement intoIterator, 
+in its 3 forms, consuming iterator, non-consuming iterator and mutable non-consuming iterator
+*/
+
+// Consuming Iterator
+/// Intermediate structure upon which we implement the IntoIterator
+pub struct IntoIteratorHelper{
+    iter: ::std::vec::IntoIter<Cell>
+}
+
+impl IntoIterator for Grid {
+    type Item = Cell;
+    type IntoIter = IntoIteratorHelper;
+
+    fn into_iter(self) -> Self::IntoIter {
+        IntoIteratorHelper{
+            iter: self.grid.into_iter()
+        }
+    }
+}
+
+impl Iterator for IntoIteratorHelper {
+    type Item = Cell;
+
+    fn next(&mut self) -> Option<Self::Item> {
+        self.iter.next()
+    }
+}
+
+// Non consuming iterator
+#[derive(Debug)]
+pub struct IterHelper<'a> {
+    iter: ::std::slice::Iter<'a, Cell>
+}
+
+impl<'a> IntoIterator for &'a Grid {
+    type Item = &'a Cell;
+    type IntoIter = IterHelper<'a>;
+
+    fn into_iter(self) -> Self::IntoIter {
+        IterHelper{
+            iter: self.grid.iter()
+        }
+    }
+}
+
+impl<'a> Iterator for IterHelper<'a> {
+    type Item = &'a Cell;
+    fn next(&mut self) -> Option<Self::Item> {
+        self.iter.next()
+    }
+}
+
+// mutable non-consuming
+
+pub struct IterMutHelper<'a> {
+    iter: ::std::slice::IterMut<'a, Cell>
+}
+
+impl<'a> IntoIterator for &'a mut  Grid {
+    type Item = &'a mut  Cell;
+    type IntoIter = IterMutHelper<'a>;
+
+    fn into_iter(self) -> Self::IntoIter {
+        IterMutHelper{
+            iter: self.grid.iter_mut()
+        }
+    }
+}
+
+impl<'a> Iterator for IterMutHelper<'a> {
+    type Item = &'a mut Cell;
+    fn next(&mut self) -> Option<Self::Item> {
+        self.iter.next()
+    }
+}
+
+
 
 #[cfg(test)]
 mod tests {
@@ -107,5 +213,20 @@ mod tests {
             assert_eq!(cell.west, Some(8));
             assert_eq!(cell.north, Some(5));
         }
+    }
+
+    #[test]
+    fn test_grid_iterator_count_adapter() {
+        let mut grid = Grid::new(4, 4);
+        grid.configure_cells();
+        assert_eq!(grid.each_cell().count(), 16) 
+    }
+
+    #[test]
+    fn test_grid_iterator_filter_adapter() {
+        let mut grid = Grid::new(4, 4);
+        grid.configure_cells();
+        // grid.each_cell().take(0..=4)
+        assert_eq!(8, grid.each_cell().filter(|cell| cell.id % 2 == 0).count()) 
     }
 }
