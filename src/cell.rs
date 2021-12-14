@@ -1,10 +1,10 @@
-/* 
+/*
     Cell module, which implements Cell struct and its functionalities.
 */
 use std::collections::HashMap;
 
 /// `Cell` is the atomic entity in maze, a matrix of cells makes a `Grid`.
-/// 
+///
 /// * id - The unique id of cell in a Grid.
 /// * row - Row number of the Cell in a Grid
 /// * col - Column number of the Cell in a Grid.
@@ -14,39 +14,51 @@ use std::collections::HashMap;
 /// * east - Id of the eastern neighbour of the Cell.
 /// * links - A mapping of open links (joined by a passage) to other cells.
 #[derive(Debug)]
-pub struct Cell{
-    pub id: u32,
-    row: u32,
-    col: u32,
-    north: Option<u32>  ,
-    south: Option<u32> ,
-    west: Option<u32>,
-    east: Option<u32>,
-    links: HashMap<u32, bool>
+pub struct Cell {
+    pub id: i32,
+    row: i32,
+    col: i32,
+    pub north: Option<i32>,
+    pub south: Option<i32>,
+    pub west: Option<i32>,
+    pub east: Option<i32>,
+    links: HashMap<i32, bool>,
 }
 
 impl Cell {
-    pub fn new(id: u32, row: u32, col: u32) -> Cell {
-        Cell{id, row, col, north: None, south: None,
-            east: None, west: None, links: HashMap::new()}
+    pub fn new(id: i32, row: i32, col: i32) -> Cell {
+        Cell {
+            id,
+            row,
+            col,
+            north: None,
+            south: None,
+            east: None,
+            west: None,
+            links: HashMap::new(),
+        }
     }
 
+    /// Links 2 cell bidirectionally
     pub fn link(&mut self, linked_cell: &mut Cell, is_bidirectional: bool) {
         self.links.insert(linked_cell.id, true);
-        if is_bidirectional { // The flag stops recursive calling.
+        if is_bidirectional {
+            // The flag stops recursive calling.
             linked_cell.link(self, false);
         }
     }
 
+    /// Unlinks 2 cell bidirectionally
     pub fn unlink(&mut self, unlinked_cell: &mut Cell, is_bidirectional: bool) {
         self.links.remove(&unlinked_cell.id);
-        if is_bidirectional { // The flag stops recursive calling.
+        if is_bidirectional {
+            // The flag stops recursive calling.
             unlinked_cell.unlink(self, false);
         }
     }
 
-    fn get_linked_cells(&self) -> Vec<u32> {
-        let linked_keys: Vec<u32> = self.links.keys().copied().collect();
+    fn get_linked_cells(&self) -> Vec<i32> {
+        let linked_keys: Vec<i32> = self.links.keys().copied().collect();
         linked_keys
     }
 
@@ -54,25 +66,26 @@ impl Cell {
         self.links.contains_key(&cell.id)
     }
 
-    fn get_neighbours(&self) -> Vec<u32> {
-        let mut neighbours: Vec<u32> = Vec::new();
+    fn get_neighbours(&self) -> Vec<i32> {
+        let mut neighbours: Vec<i32> = Vec::new();
         if let Some(north) = self.north {
             neighbours.push(north);
         }
         if let Some(south) = self.south {
             neighbours.push(south);
-        }if let Some(west) = self.west {
+        }
+        if let Some(west) = self.west {
             neighbours.push(west);
-        }if let Some(east) = self.east {
+        }
+        if let Some(east) = self.east {
             neighbours.push(east);
         }
         neighbours
     }
-    
 }
 
 #[cfg(test)]
-mod tests{
+mod tests {
     use super::Cell;
 
     #[test]
@@ -85,7 +98,7 @@ mod tests{
     }
 
     #[test]
-    fn linking_and_unlinking_cells(){
+    fn linking_and_unlinking_cells() {
         let mut cell_a = Cell::new(0, 0, 0);
         let mut cell_b = Cell::new(1, 0, 1);
         cell_a.link(&mut cell_b, true);
