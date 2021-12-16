@@ -53,7 +53,7 @@ impl Cell {
         linked_keys
     }
 
-    fn is_linked(&self, cell_id: i32) -> bool {
+    pub fn is_linked(&self, cell_id: i32) -> bool {
         self.links.contains_key(&cell_id)
     }
 

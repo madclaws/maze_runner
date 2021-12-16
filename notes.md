@@ -12,3 +12,13 @@
     - Implemented each_cell iterator over grid
 - Next
     - Implement binary tree algorithm
+
+## 2021-12-16 22:18:45
+
+- Done.
+    - Binary Tree implementation
+    - Implemented ASCII Renderer
+
+- Next.
+    - Refactoring
+    - Sidewinder algorithm

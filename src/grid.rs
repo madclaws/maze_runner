@@ -15,7 +15,7 @@ use rand::Rng;
 pub struct Grid {
     rows: i32,
     cols: i32,
-    grid: Vec<Cell>,
+    pub grid: Vec<Cell>,
 }
 
 impl Grid {
@@ -84,6 +84,45 @@ impl Grid {
     pub fn unlink_cells(&mut self, cell_id: i32, to_link_cell_id: i32) {
         self.grid[cell_id as usize].unlink(to_link_cell_id);
         self.grid[to_link_cell_id as usize].unlink(cell_id);
+    }
+
+    // Renders the maze
+    pub fn render(&self) {
+        let mut output: String = String::from("");
+        output = format!("{}{}{}", "+", "---+".repeat(self.cols as usize), "\n");
+        for row in 0..self.rows {
+            let mut top: String = String::from("|");
+            let mut bottom: String = String::from("+");
+            for col in 0..self.cols {
+                let body = String::from("   ");
+                let mut eastern_boundary = String::from("");
+                if let Some(id) = self.grid[((row * self.cols) + col) as usize].east {
+                    if self.grid[((row * self.cols) + col) as usize].is_linked(id) {
+                        eastern_boundary = " ".to_owned();
+                    } else {
+                        eastern_boundary = "|".to_owned();
+                    }
+                } else {
+                    eastern_boundary = "|".to_owned();
+                }
+                top = format!("{}{}{}", top, body, eastern_boundary);
+
+                let mut southern_boundary = String::from("");
+                if let Some(id) = self.grid[((row * self.cols) + col) as usize].south {
+                    if self.grid[((row * self.cols) + col) as usize].is_linked(id) {
+                        southern_boundary = "   ".to_owned();
+                    } else {
+                        southern_boundary = "---".to_owned();
+                    }
+                } else {
+                    southern_boundary = "---".to_owned();
+                }
+                bottom = format!("{}{}{}", bottom, southern_boundary, "+");
+            }
+            output = format!("{}{}{}", output, top, "\n");
+            output = format!("{}{}{}", output, bottom, "\n");
+        }
+        println!("{}", output);
     }
 
     /// Creates a 2D matrix of cells
