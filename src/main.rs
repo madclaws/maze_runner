@@ -1,6 +1,6 @@
 mod cell;
 mod grid;
-
+mod binary_tree;
 use cell::*;
 use grid::*;
 

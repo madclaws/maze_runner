@@ -39,31 +39,22 @@ impl Cell {
         }
     }
 
-    /// Links 2 cell bidirectionally
-    pub fn link(&mut self, linked_cell: &mut Cell, is_bidirectional: bool) {
-        self.links.insert(linked_cell.id, true);
-        if is_bidirectional {
-            // The flag stops recursive calling.
-            linked_cell.link(self, false);
-        }
+    pub fn link(&mut self, linked_cell_id: i32) {
+        self.links.insert(linked_cell_id, true);
     }
 
     /// Unlinks 2 cell bidirectionally
-    pub fn unlink(&mut self, unlinked_cell: &mut Cell, is_bidirectional: bool) {
-        self.links.remove(&unlinked_cell.id);
-        if is_bidirectional {
-            // The flag stops recursive calling.
-            unlinked_cell.unlink(self, false);
-        }
+    pub fn unlink(&mut self, unlinked_cell_id: i32) {
+        self.links.remove(&unlinked_cell_id);
     }
 
-    fn get_linked_cells(&self) -> Vec<i32> {
+    pub fn get_linked_cells(&self) -> Vec<i32> {
         let linked_keys: Vec<i32> = self.links.keys().copied().collect();
         linked_keys
     }
 
-    fn is_linked(&self, cell: &Cell) -> bool {
-        self.links.contains_key(&cell.id)
+    fn is_linked(&self, cell_id: i32) -> bool {
+        self.links.contains_key(&cell_id)
     }
 
     fn get_neighbours(&self) -> Vec<i32> {
@@ -100,13 +91,12 @@ mod tests {
     #[test]
     fn linking_and_unlinking_cells() {
         let mut cell_a = Cell::new(0, 0, 0);
-        let mut cell_b = Cell::new(1, 0, 1);
-        cell_a.link(&mut cell_b, true);
+        cell_a.link(1);
         assert_eq!(cell_a.links.contains_key(&1), true);
-        assert_eq!(cell_b.links.contains_key(&0), true);
-        cell_b.unlink(&mut cell_a, true);
-        assert_ne!(cell_a.links.contains_key(&1), true);
-        assert_ne!(cell_b.links.contains_key(&0), true);
+        // assert_eq!(cell_b.links.contains_key(&0), true);
+        // cell_b.unlink(0);
+        // assert_ne!(cell_a.links.contains_key(&1), true);
+        // assert_ne!(cell_b.links.contains_key(&0), true);
     }
 
     #[test]
@@ -114,8 +104,8 @@ mod tests {
         let mut cell_a = Cell::new(0, 0, 0);
         let mut cell_b = Cell::new(1, 0, 1);
         let mut cell_c = Cell::new(2, 1, 0);
-        cell_a.link(&mut cell_b, true);
-        cell_a.link(&mut cell_c, true);
+        cell_a.link(1);
+        cell_a.link(2);
         let linked_cells = cell_a.get_linked_cells();
         assert_eq!(linked_cells.len(), 2);
     }
@@ -123,13 +113,13 @@ mod tests {
     #[test]
     fn is_linked() {
         let mut cell_a = Cell::new(0, 0, 0);
-        let mut cell_b = Cell::new(1, 0, 1);
+        let cell_b = Cell::new(1, 0, 1);
         let mut cell_c = Cell::new(2, 1, 0);
-        cell_a.link(&mut cell_b, true);
-        cell_a.link(&mut cell_c, true);
-        assert_eq!(cell_a.is_linked(&cell_b), true);
-        cell_c.unlink(&mut cell_a, true);
-        assert_eq!(cell_c.is_linked(&cell_a), false);
+        cell_a.link(1);
+        cell_a.link(2);
+        assert_eq!(cell_a.is_linked(1), true);
+        cell_c.unlink(0);
+        assert_eq!(cell_c.is_linked(0), false);
     }
 
     #[test]

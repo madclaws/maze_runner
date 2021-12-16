@@ -65,13 +65,25 @@ impl Grid {
             }
         }
     }
-
+    
     pub fn each_cell(&self) -> IterHelper {
         self.into_iter()
     }
 
     pub fn each_cell_mut(&mut self) -> IterMutHelper {
         self.into_iter()
+    }
+
+    // Doing biderectional links with cells
+    pub fn link_cells(&mut self, cell_id: i32, to_link_cell_id: i32) {
+        self.grid[cell_id as usize].link(to_link_cell_id);
+        self.grid[to_link_cell_id as usize].link(cell_id);
+    }
+
+    // Doing biderectional unlinks with cells
+    pub fn unlink_cells(&mut self, cell_id: i32, to_link_cell_id: i32) {
+        self.grid[cell_id as usize].unlink(to_link_cell_id);
+        self.grid[to_link_cell_id as usize].unlink(cell_id);
     }
 
     /// Creates a 2D matrix of cells
@@ -228,5 +240,21 @@ mod tests {
         grid.configure_cells();
         // grid.each_cell().take(0..=4)
         assert_eq!(8, grid.each_cell().filter(|cell| cell.id % 2 == 0).count()) 
+    }
+
+    #[test]
+    fn test_link_and_unlink_cells() {
+        let mut grid = Grid::new(4, 4);
+        grid.configure_cells();
+        grid.link_cells(0, 1);
+        let linked_cells_0 = grid.grid[0].get_linked_cells();
+        assert_eq!(linked_cells_0.into_iter().find(|x| *x == 1), Some(1));
+        let linked_cells_1 = grid.grid[1].get_linked_cells();
+        assert_eq!(linked_cells_1.into_iter().find(|x| *x == 0), Some(0));
+        grid.unlink_cells(0, 1);
+        let linked_cells_0 = grid.grid[0].get_linked_cells();
+        assert_eq!(linked_cells_0.into_iter().find(|x| *x == 1), None);
+        let linked_cells_1 = grid.grid[1].get_linked_cells();
+        assert_eq!(linked_cells_1.into_iter().find(|x| *x == 0), None);
     }
 }
