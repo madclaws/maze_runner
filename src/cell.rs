@@ -57,7 +57,8 @@ impl Cell {
         self.links.contains_key(&cell_id)
     }
 
-    fn get_neighbours(&self) -> Vec<i32> {
+
+    fn _get_neighbours(&self) -> Vec<i32> {
         let mut neighbours: Vec<i32> = Vec::new();
         if let Some(north) = self.north {
             neighbours.push(north);
@@ -125,6 +126,6 @@ mod tests {
     #[test]
     fn getting_neighbours() {
         let cell_a = Cell::new(0, 0, 0);
-        assert_eq!(cell_a.get_neighbours().len(), 0);
+        assert_eq!(cell_a._get_neighbours().len(), 0);
     }
 }

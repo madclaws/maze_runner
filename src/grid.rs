@@ -31,13 +31,15 @@ impl Grid {
         (self.rows * self.cols) as u32
     }
 
-    fn get_random_cell(&self) -> Option<&Cell> {
+    
+    fn _get_random_cell(&self) -> Option<&Cell> {
         let rand_row = rand::thread_rng().gen_range(0..self.rows);
         let rand_col = rand::thread_rng().gen_range(0..self.rows);
         self.grid.get(self.get_index(rand_row, rand_col) as usize)
     }
 
-    fn get_cell(&self, row: i32, col: i32) -> Option<&Cell> {
+    
+    fn _get_cell(&self, row: i32, col: i32) -> Option<&Cell> {
         self.grid.get(self.get_index(row, col) as usize)
     }
 
@@ -88,14 +90,13 @@ impl Grid {
 
     // Renders the maze
     pub fn render(&self) {
-        let mut output: String = String::from("");
-        output = format!("{}{}{}", "+", "---+".repeat(self.cols as usize), "\n");
+        let mut output = format!("{}{}{}", "+", "---+".repeat(self.cols as usize), "\n");
         for row in 0..self.rows {
             let mut top: String = String::from("|");
             let mut bottom: String = String::from("+");
             for col in 0..self.cols {
                 let body = String::from("   ");
-                let mut eastern_boundary = String::from("");
+                let eastern_boundary;
                 if let Some(id) = self.grid[((row * self.cols) + col) as usize].east {
                     if self.grid[((row * self.cols) + col) as usize].is_linked(id) {
                         eastern_boundary = " ".to_owned();
@@ -107,7 +108,7 @@ impl Grid {
                 }
                 top = format!("{}{}{}", top, body, eastern_boundary);
 
-                let mut southern_boundary = String::from("");
+                let southern_boundary;
                 if let Some(id) = self.grid[((row * self.cols) + col) as usize].south {
                     if self.grid[((row * self.cols) + col) as usize].is_linked(id) {
                         southern_boundary = "   ".to_owned();
@@ -243,7 +244,7 @@ mod tests {
     #[test]
     fn creating_grid() {
         let grid = Grid::new(4, 4);
-        if let Some(cell) = grid.get_cell(3, 3) {
+        if let Some(cell) = grid._get_cell(3, 3) {
             assert_eq!(cell.id, 15);
         }
     }
@@ -252,13 +253,13 @@ mod tests {
     fn test_configure_cells() {
         let mut grid = Grid::new(4, 4);
         grid.configure_cells();
-        if let Some(cell) = grid.get_cell(3, 3) {
+        if let Some(cell) = grid._get_cell(3, 3) {
             assert_eq!(cell.east, None);
             assert_eq!(cell.south, None);
             assert_eq!(cell.west, Some(14));
             assert_eq!(cell.north, Some(11));
         }
-        if let Some(cell) = grid.get_cell(2, 1) {
+        if let Some(cell) = grid._get_cell(2, 1) {
             assert_eq!(cell.east, Some(10));
             assert_eq!(cell.south, Some(13));
             assert_eq!(cell.west, Some(8));
