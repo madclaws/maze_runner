@@ -22,3 +22,8 @@
 - Next.
     - Refactoring
     - Sidewinder algorithm
+
+## 2022-01-11 02:32:15
+
+- We need to Refactor the Rendering code.
+- For now we can implement sidewinder algorithm

@@ -3,7 +3,9 @@
 > Mazes, Mazes everywhere
 
 
-`cargo run` to generate random 10*10 perfect mazes using Binary tree algorithm
+`cargo run` to generate random 10*10 perfect mazes 
+
+## Using Binary tree algorithm
 
 
 ```
@@ -28,4 +30,36 @@
 +   +---+   +   +   +---+---+   +   +   +
 |   |       |   |   |           |   |   |
 +---+---+---+---+---+---+---+---+---+---+
+```
+
+## Using Sidewinder algorithm
+
+```
++---+---+---+---+---+---+---+---+---+---+
+|                                       |
++   +---+   +   +   +   +   +   +   +   +
+|       |   |   |   |   |   |   |   |   |
++   +---+---+---+---+   +---+---+---+   +
+|       |               |               |
++   +---+   +   +   +---+   +---+   +   +
+|       |   |   |   |           |   |   |
++   +   +---+---+---+   +---+---+   +---+
+|   |       |                   |       |
++   +---+---+   +---+   +   +---+---+   +
+|           |   |       |   |           |
++   +   +---+---+   +---+   +---+   +   +
+|   |           |       |   |       |   |
++   +   +   +---+   +---+   +   +---+   +
+|   |   |       |   |       |   |       |
++   +---+---+   +   +   +---+---+   +   +
+|           |   |   |           |   |   |
++   +---+---+   +---+---+---+   +---+   +
+|   |           |               |       |
++---+---+---+---+---+---+---+---+---+---+
+```
+
+```
+Binary tree bias - Northern row and eastern column is empty
+
+Sidewinder bias - Even though northern row is empty, eastern row isn't.
 ```

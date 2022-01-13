@@ -13,8 +13,8 @@ use rand::Rng;
 
 #[derive(Debug)]
 pub struct Grid {
-    rows: i32,
-    cols: i32,
+    pub rows: i32,
+    pub cols: i32,
     pub grid: Vec<Cell>,
 }
 
