@@ -16,8 +16,8 @@ use std::collections::HashMap;
 #[derive(Debug, Clone)]
 pub struct Cell {
     pub id: i32,
-    row: i32,
-    col: i32,
+    pub row: i32,
+    pub col: i32,
     pub north: Option<i32>,
     pub south: Option<i32>,
     pub west: Option<i32>,

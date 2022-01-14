@@ -2,37 +2,24 @@
 
 > Mazes, Mazes everywhere
 
-
-`cargo run` to generate random 10*10 perfect mazes 
-
-## Using Binary tree algorithm
-
+## Running
 
 ```
-+---+---+---+---+---+---+---+---+---+---+
-|                                       |
-+   +---+   +---+---+   +   +   +---+   +
-|   |       |           |   |   |       |
-+   +---+---+---+---+---+   +---+---+   +
-|   |                       |           |
-+---+   +---+   +   +   +   +   +---+   +
-|       |       |   |   |   |   |       |
-+   +   +---+---+---+---+---+---+---+   +
-|   |   |                               |
-+   +   +---+   +   +   +---+---+   +   +
-|   |   |       |   |   |           |   |
-+   +   +---+   +---+   +---+   +   +   +
-|   |   |       |       |       |   |   |
-+   +   +   +   +---+---+---+   +---+   +
-|   |   |   |   |               |       |
-+   +---+   +   +---+   +---+---+---+   +
-|   |       |   |       |               |
-+   +---+   +   +   +---+---+   +   +   +
-|   |       |   |   |           |   |   |
-+---+---+---+---+---+---+---+---+---+---+
+cargo run <atomic number of maze name>
+
+Ex: `cargo run 3` will render lithium maze
 ```
 
-## Using Sidewinder algorithm
+
+## Lithium
+
+> Random perfect maze with sidwinder algorithm, rendered with [Macroquad](https://macroquad.rs/) 
+
+![lithium](mazes/lithium.png?raw=true  "lithium")
+
+## Helium
+
+> Random perfect maze with sidewinder algorithm. Northern open bias is visible 
 
 ```
 +---+---+---+---+---+---+---+---+---+---+
@@ -58,8 +45,31 @@
 +---+---+---+---+---+---+---+---+---+---+
 ```
 
-```
-Binary tree bias - Northern row and eastern column is empty
 
-Sidewinder bias - Even though northern row is empty, eastern row isn't.
+## Hydrogen
+
+> Random perfect maze with binary tree algorithm. Northern and eastern open bias is visible 
+
+```
++---+---+---+---+---+---+---+---+---+---+
+|                                       |
++   +---+   +---+---+   +   +   +---+   +
+|   |       |           |   |   |       |
++   +---+---+---+---+---+   +---+---+   +
+|   |                       |           |
++---+   +---+   +   +   +   +   +---+   +
+|       |       |   |   |   |   |       |
++   +   +---+---+---+---+---+---+---+   +
+|   |   |                               |
++   +   +---+   +   +   +---+---+   +   +
+|   |   |       |   |   |           |   |
++   +   +---+   +---+   +---+   +   +   +
+|   |   |       |       |       |   |   |
++   +   +   +   +---+---+---+   +---+   +
+|   |   |   |   |               |       |
++   +---+   +   +---+   +---+---+---+   +
+|   |       |   |       |               |
++   +---+   +   +   +---+---+   +   +   +
+|   |       |   |   |           |   |   |
++---+---+---+---+---+---+---+---+---+---+
 ```
