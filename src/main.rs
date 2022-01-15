@@ -4,6 +4,8 @@ mod cell;
 mod grid;
 mod binary_tree;
 mod sidewinder;
+mod distances;
+
 use macroquad::prelude::*;
 use grid::*;
 
@@ -40,6 +42,7 @@ async fn main() {
 
    
 }
+
 
 fn render(grid: &Grid) {
     let cell_size: i32 = 50;
