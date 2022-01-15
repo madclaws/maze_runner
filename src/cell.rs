@@ -57,7 +57,6 @@ impl Cell {
         self.links.contains_key(&cell_id)
     }
 
-
     fn _get_neighbours(&self) -> Vec<i32> {
         let mut neighbours: Vec<i32> = Vec::new();
         if let Some(north) = self.north {

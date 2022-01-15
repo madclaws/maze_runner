@@ -4,6 +4,7 @@
     Grid is a wrapper of 2D array of Cells.
 */
 use crate::cell::*;
+use crate::distances::*;
 use rand::Rng;
 /// Grid representation
 ///
@@ -124,6 +125,29 @@ impl Grid {
             output = format!("{}{}{}", output, bottom, "\n");
         }
         println!("{}", output);
+    }
+
+    pub fn distances(&self, root_cell_id: i32) -> Distances{
+        let mut distances = Distances::new(root_cell_id);
+        let mut frontier: Vec<i32> = vec![root_cell_id];
+        println!("Starting calculating relative distance from the root");
+        while !frontier.is_empty() {
+            let mut next_frontiers: Vec<i32> = Vec::new();
+            for cell_id in &frontier {
+                let linked_cells = self.grid[*cell_id as usize].get_linked_cells();
+                for linked_cell in &linked_cells {
+                    if distances.get_distance(*linked_cell).is_none() {
+                        distances.set_distance(*linked_cell, *distances.get_distance(*cell_id).unwrap() + 1);
+                        next_frontiers.push(*linked_cell);
+                    }
+                }
+            }
+            frontier.clear();
+            frontier = next_frontiers;
+        }
+        println!("Ending calculation of relative distance from the root\n\n");
+        println!("{:?}", distances);
+        distances
     }
 
     /// Creates a 2D matrix of cells
@@ -296,5 +320,15 @@ mod tests {
         assert_eq!(linked_cells_0.into_iter().find(|x| *x == 1), None);
         let linked_cells_1 = grid.grid[1].get_linked_cells();
         assert_eq!(linked_cells_1.into_iter().find(|x| *x == 0), None);
+    }
+
+    #[test]
+    fn test_distances() {
+        let mut grid = Grid::new(4, 4);
+        grid.configure_cells();
+        grid.link_cells(0, 1);
+        let distances = grid.distances(0);
+        assert_eq!(distances.get_distance(1), Some(&1));
+        assert_eq!(distances.get_distance(4), None);
     }
 }

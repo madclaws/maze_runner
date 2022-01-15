@@ -8,22 +8,23 @@
 
 use std::collections::HashMap;
 
+#[derive(Debug)]
 pub struct Distances {
     cells: HashMap<i32, u32>
 }
 
 impl Distances {
-    fn new(root_cell_id: i32) -> Self {
+    pub fn new(root_cell_id: i32) -> Self {
         let mut cells: HashMap<i32, u32> = HashMap::new();
         cells.insert(root_cell_id, 0);
         Distances{cells}
     }
 
-    fn get_distance(&self, cell_id: i32) -> Option<&u32> {
+    pub fn get_distance(&self, cell_id: i32) -> Option<&u32> {
         self.cells.get(&cell_id)
     }
 
-    fn set_distance(&mut self, cell_id: i32, distance: u32) -> Option<u32> {
+    pub fn set_distance(&mut self, cell_id: i32, distance: u32) -> Option<u32> {
         self.cells.insert(cell_id, distance)
     }
 

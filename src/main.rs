@@ -21,6 +21,8 @@ async fn main() {
         1 => {
             println!("Hydrogen - Binary tree\n");
             binary_tree::on(&mut grid);
+            
+            // grid.distances(0);
             grid.render();
         },
         2 => {
