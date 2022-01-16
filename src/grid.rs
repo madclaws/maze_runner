@@ -150,6 +150,25 @@ impl Grid {
         distances
     }
 
+    pub fn breadcrumbs(&self, goal_cell_id: i32, root_cell_id: i32, distances: &Distances) -> Distances {
+        let mut breadcrumbs = Distances::new(root_cell_id);
+        let mut current_cell_id = goal_cell_id;
+        breadcrumbs.set_distance(current_cell_id, *distances.get_distance(current_cell_id).unwrap());
+        while current_cell_id != root_cell_id {
+            let current_cell_distance = distances.get_distance(current_cell_id).unwrap();
+            let linked_cells = self.grid[current_cell_id as usize].get_linked_cells();
+            for linked_cell in &linked_cells {
+                if distances.get_distance(*linked_cell).unwrap() < current_cell_distance {
+                    current_cell_id = *linked_cell;
+                    breadcrumbs.set_distance(current_cell_id, *distances.get_distance(current_cell_id).unwrap());
+                    break;
+                }
+            }
+        }
+        println!("BREADCRUMBS\n {:?}", breadcrumbs);
+        breadcrumbs
+    }
+
     /// Creates a 2D matrix of cells
     fn prepare_grid(rows: i32, cols: i32) -> Vec<Cell> {
         let mut grid: Vec<Cell> = Vec::new();

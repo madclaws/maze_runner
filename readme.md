@@ -10,6 +10,12 @@ cargo run <atomic number of maze name>
 Ex: `cargo run 3` will render lithium maze
 ```
 
+## Beryllium
+> Maze solver using the eponymous Dijkstra's algorithm
+
+**Below is the shortest past from southwest cell to northwest cell. The numbers indicate the relative distance of each cells from the root cell (which is northwest cell, which has 0 distance from itself)**
+
+![Beryllium](mazes/beryllium.png?raw=true  "Beryllium")
 
 ## Lithium
 
