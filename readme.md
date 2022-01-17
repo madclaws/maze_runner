@@ -10,6 +10,12 @@ cargo run <atomic number of maze name>
 Ex: `cargo run 3` will render lithium maze
 ```
 
+## Boron
+> Making maze harder by finding one of the largest paths
+
+**Ironcally we use Dijkstra's for finding the largest path, as in Beryllium we used it for finding shortest path. The trick is to find the farthest cell from root(0) and then find the farthest point from the farthest point and plot a path**
+
+![Boron](mazes/boron.png?raw=true  "Beryllium")
 ## Beryllium
 > Maze solver using the eponymous Dijkstra's algorithm
 

@@ -28,6 +28,23 @@ impl Distances {
         self.cells.insert(cell_id, distance)
     }
 
+    pub fn get_most_distant(&self, cell_id: i32) -> (i32, u32){
+        let mut max_cell: i32 = cell_id;
+        let mut max_distance = 0; // ofcourse as cell_id is the starting point
+
+        for (cell_id, distance) in &self.cells {
+            if distance > &max_distance {
+                max_cell = *cell_id;
+                max_distance = *distance;
+            }
+        }
+        (max_cell, max_distance)
+    }
+
+    pub fn get_total_distances(&self) -> u32 {
+        self.cells.len() as u32
+    }
+
     fn get_cells(&self) -> Vec<&i32> {
         self.cells.keys().collect::<Vec<&i32>>()
     }
