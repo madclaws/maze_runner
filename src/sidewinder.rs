@@ -1,9 +1,9 @@
-/* 
+/*
     Maze generation using Sidewinder algorithm
 */
 
-use crate::grid::*;
 use crate::cell::*;
+use crate::grid::*;
 use rand::Rng;
 
 pub fn on(grid: &mut Grid) -> &mut Grid {
@@ -16,9 +16,9 @@ pub fn on(grid: &mut Grid) -> &mut Grid {
             let at_eastern_boundary = cell.east.is_none();
             let at_nothern_boundary = cell.north.is_none();
 
-            let should_close_out = at_eastern_boundary || (!at_nothern_boundary && 
-                rand::thread_rng().gen_range(0..2) == 0);
-            
+            let should_close_out = at_eastern_boundary
+                || (!at_nothern_boundary && rand::thread_rng().gen_range(0..2) == 0);
+
             if should_close_out {
                 let index = rand::thread_rng().gen_range(0..run.len());
                 let member = run[index];

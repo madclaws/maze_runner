@@ -24,7 +24,7 @@ impl Grid {
         Grid {
             rows,
             cols,
-            grid: Grid::prepare_grid(rows, cols)
+            grid: Grid::prepare_grid(rows, cols),
         }
     }
 
@@ -32,14 +32,12 @@ impl Grid {
         (self.rows * self.cols) as u32
     }
 
-    
     fn _get_random_cell(&self) -> Option<&Cell> {
         let rand_row = rand::thread_rng().gen_range(0..self.rows);
         let rand_col = rand::thread_rng().gen_range(0..self.rows);
         self.grid.get(self.get_index(rand_row, rand_col) as usize)
     }
 
-    
     fn _get_cell(&self, row: i32, col: i32) -> Option<&Cell> {
         self.grid.get(self.get_index(row, col) as usize)
     }
@@ -68,7 +66,7 @@ impl Grid {
             }
         }
     }
-    
+
     pub fn each_cell(&self) -> IterHelper {
         self.into_iter()
     }
@@ -127,7 +125,7 @@ impl Grid {
         println!("{}", output);
     }
 
-    pub fn distances(&self, root_cell_id: i32) -> Distances{
+    pub fn distances(&self, root_cell_id: i32) -> Distances {
         let mut distances = Distances::new(root_cell_id);
         let mut frontier: Vec<i32> = vec![root_cell_id];
         println!("Starting calculating relative distance from the root");
@@ -137,7 +135,10 @@ impl Grid {
                 let linked_cells = self.grid[*cell_id as usize].get_linked_cells();
                 for linked_cell in &linked_cells {
                     if distances.get_distance(*linked_cell).is_none() {
-                        distances.set_distance(*linked_cell, *distances.get_distance(*cell_id).unwrap() + 1);
+                        distances.set_distance(
+                            *linked_cell,
+                            *distances.get_distance(*cell_id).unwrap() + 1,
+                        );
                         next_frontiers.push(*linked_cell);
                     }
                 }
@@ -150,17 +151,28 @@ impl Grid {
         distances
     }
 
-    pub fn breadcrumbs(&self, goal_cell_id: i32, root_cell_id: i32, distances: &Distances) -> Distances {
+    pub fn breadcrumbs(
+        &self,
+        goal_cell_id: i32,
+        root_cell_id: i32,
+        distances: &Distances,
+    ) -> Distances {
         let mut breadcrumbs = Distances::new(root_cell_id);
         let mut current_cell_id = goal_cell_id;
-        breadcrumbs.set_distance(current_cell_id, *distances.get_distance(current_cell_id).unwrap());
+        breadcrumbs.set_distance(
+            current_cell_id,
+            *distances.get_distance(current_cell_id).unwrap(),
+        );
         while current_cell_id != root_cell_id {
             let current_cell_distance = distances.get_distance(current_cell_id).unwrap();
             let linked_cells = self.grid[current_cell_id as usize].get_linked_cells();
             for linked_cell in &linked_cells {
                 if distances.get_distance(*linked_cell).unwrap() < current_cell_distance {
                     current_cell_id = *linked_cell;
-                    breadcrumbs.set_distance(current_cell_id, *distances.get_distance(current_cell_id).unwrap());
+                    breadcrumbs.set_distance(
+                        current_cell_id,
+                        *distances.get_distance(current_cell_id).unwrap(),
+                    );
                     break;
                 }
             }
@@ -181,7 +193,7 @@ impl Grid {
     }
 }
 
-/* 
+/*
  self consuming struct iterator (for later reference)
  Here we need some field in struct to track the index
 */
@@ -199,16 +211,16 @@ impl Grid {
 //     }
 // }
 
-/* 
+/*
 We have to implement an iterator on the grid vector (so that we can iterate through
-each cells without using loops). For that we need to implement intoIterator, 
+each cells without using loops). For that we need to implement intoIterator,
 in its 3 forms, consuming iterator, non-consuming iterator and mutable non-consuming iterator
 */
 
 // Consuming Iterator
 /// Intermediate structure upon which we implement the IntoIterator
-pub struct IntoIteratorHelper{
-    iter: ::std::vec::IntoIter<Cell>
+pub struct IntoIteratorHelper {
+    iter: ::std::vec::IntoIter<Cell>,
 }
 
 impl IntoIterator for Grid {
@@ -216,8 +228,8 @@ impl IntoIterator for Grid {
     type IntoIter = IntoIteratorHelper;
 
     fn into_iter(self) -> Self::IntoIter {
-        IntoIteratorHelper{
-            iter: self.grid.into_iter()
+        IntoIteratorHelper {
+            iter: self.grid.into_iter(),
         }
     }
 }
@@ -233,7 +245,7 @@ impl Iterator for IntoIteratorHelper {
 // Non consuming iterator
 #[derive(Debug)]
 pub struct IterHelper<'a> {
-    iter: ::std::slice::Iter<'a, Cell>
+    iter: ::std::slice::Iter<'a, Cell>,
 }
 
 impl<'a> IntoIterator for &'a Grid {
@@ -241,8 +253,8 @@ impl<'a> IntoIterator for &'a Grid {
     type IntoIter = IterHelper<'a>;
 
     fn into_iter(self) -> Self::IntoIter {
-        IterHelper{
-            iter: self.grid.iter()
+        IterHelper {
+            iter: self.grid.iter(),
         }
     }
 }
@@ -257,16 +269,16 @@ impl<'a> Iterator for IterHelper<'a> {
 // mutable non-consuming
 
 pub struct IterMutHelper<'a> {
-    iter: ::std::slice::IterMut<'a, Cell>
+    iter: ::std::slice::IterMut<'a, Cell>,
 }
 
-impl<'a> IntoIterator for &'a mut  Grid {
-    type Item = &'a mut  Cell;
+impl<'a> IntoIterator for &'a mut Grid {
+    type Item = &'a mut Cell;
     type IntoIter = IterMutHelper<'a>;
 
     fn into_iter(self) -> Self::IntoIter {
-        IterMutHelper{
-            iter: self.grid.iter_mut()
+        IterMutHelper {
+            iter: self.grid.iter_mut(),
         }
     }
 }
@@ -277,8 +289,6 @@ impl<'a> Iterator for IterMutHelper<'a> {
         self.iter.next()
     }
 }
-
-
 
 #[cfg(test)]
 mod tests {
@@ -314,7 +324,7 @@ mod tests {
     fn test_grid_iterator_count_adapter() {
         let mut grid = Grid::new(4, 4);
         grid.configure_cells();
-        assert_eq!(grid.each_cell().count(), 16) 
+        assert_eq!(grid.each_cell().count(), 16)
     }
 
     #[test]
@@ -322,7 +332,7 @@ mod tests {
         let mut grid = Grid::new(4, 4);
         grid.configure_cells();
         // grid.each_cell().take(0..=4)
-        assert_eq!(8, grid.each_cell().filter(|cell| cell.id % 2 == 0).count()) 
+        assert_eq!(8, grid.each_cell().filter(|cell| cell.id % 2 == 0).count())
     }
 
     #[test]

@@ -8,14 +8,25 @@
 cargo run <atomic number of maze name>
 
 Ex: `cargo run 3` will render lithium maze
+
+Will generate random mazes everytime :)
 ```
+
+## Carbon
+> Coloring the mazes with help of Dijkstra
+
+**On left `binary-tree` and right `sidewinder`. The root cell is at center of maze, farther the cell from root, more intensified its color will be.** 
+
+**Coloring is very helpful to analyze the algorithm by which a maze is generated. `binary-tree` pattern is a zigzag everytime and `sidwinder` is more of vertically distributed**.
+
+![carbon](mazes/carbon.png?raw=true  "Carbon")
 
 ## Boron
 > Making maze harder by finding one of the largest paths
 
-**Ironcally we use Dijkstra's for finding the largest path, as in Beryllium we used it for finding shortest path. The trick is to find the farthest cell from root(0) and then find the farthest point from the farthest point and plot a path**
+**Ironically we use Dijkstra's for finding the largest path, as in Beryllium we used it for finding shortest path. The trick is to find the farthest cell from root(0) and then find the farthest point from the farthest point and plot a path**
 
-![Boron](mazes/boron.png?raw=true  "Beryllium")
+![Boron](mazes/boron.png?raw=true  "Boron")
 ## Beryllium
 > Maze solver using the eponymous Dijkstra's algorithm
 
@@ -25,7 +36,7 @@ Ex: `cargo run 3` will render lithium maze
 
 ## Lithium
 
-> Random perfect maze with sidwinder algorithm, rendered with [Macroquad](https://macroquad.rs/) 
+> Random perfect maze with sidewinder algorithm, rendered with [Macroquad](https://macroquad.rs/) 
 
 ![lithium](mazes/lithium.png?raw=true  "lithium")
 

@@ -1,4 +1,4 @@
-/* 
+/*
     Maze generation using Binary Tree Algorithm
 */
 use rand::Rng;
