@@ -1,6 +1,7 @@
 # Maze Runner
 
-> Mazes, Mazes everywhere
+![logo](mazes/mazes.jpg?raw=true  "logo")
+
 
 ## Running
 
