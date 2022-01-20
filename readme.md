@@ -2,7 +2,7 @@
 
 ![logo](mazes/mazes.jpg?raw=true  "logo")
 
-
+**Project is very much inspired from the book [Mazes for programmers](https://pragprog.com/titles/jbmaze/mazes-for-programmers/)**
 ## Running
 
 ```
