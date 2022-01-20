@@ -1,10 +1,11 @@
 use std::env;
+mod aldous_broder;
 mod binary_tree;
 mod cell;
 mod distances;
 mod grid;
 mod sidewinder;
-
+use aldous_broder::*;
 use distances::*;
 use grid::*;
 use macroquad::prelude::*;
@@ -156,6 +157,49 @@ async fn main() {
                     RenderMode::Background,
                     &distances,
                     BLUE,
+                    800.0,
+                    0.0,
+                    false,
+                );
+                render(
+                    &grid,
+                    RenderMode::Walls,
+                    &distances,
+                    BLACK,
+                    800.0,
+                    0.0,
+                    false,
+                );
+                next_frame().await
+            }
+        }
+        7 => {
+            println!("Nitrogen - Aldous Brorder algorithm\n");
+            let mut grid = Grid::new(13, 13);
+            grid.configure_cells();
+            aldous_broder::on(&mut grid);
+
+            let distances = grid.distances(84);
+
+            loop {
+                // clear_background(Color::new(1.0, 204.0/255.0, 203.0/255.0, 1.0));
+                clear_background(BLACK);
+
+                render(
+                    &grid,
+                    RenderMode::Walls,
+                    &distances,
+                    DARKGREEN,
+                    0.0,
+                    0.0,
+                    false,
+                );
+
+                render(
+                    &grid,
+                    RenderMode::Background,
+                    &distances,
+                    GREEN,
                     800.0,
                     0.0,
                     false,

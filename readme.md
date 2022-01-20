@@ -11,6 +11,12 @@ Ex: `cargo run 3` will render lithium maze
 
 Will generate random mazes everytime :)
 ```
+## Nitrogen
+> Using Aldous-Broder algorithm for unbiased mazes
+
+**Unlike `binary-tree` or `sidewinder`, Aldous-Broder's eastern and northern borders are not completely linked**
+
+![nitrogen](mazes/nitrogen_b.png?raw=true  "nitrogen")
 
 ## Carbon
 > Coloring the mazes with help of Dijkstra
@@ -24,7 +30,7 @@ Will generate random mazes everytime :)
 ## Boron
 > Making maze harder by finding one of the largest paths
 
-**Ironically we use Dijkstra's for finding the largest path, as in Beryllium we used it for finding shortest path. The trick is to find the farthest cell from root(0) and then find the farthest point from the farthest point and plot a path**
+**Ironically we use Dijkstra's for finding the longest path, as in Beryllium we used it for finding shortest path. The trick is to find the farthest cell from northeast cell (which is the root) and then find the farthest point from the farthest point and plot a path**
 
 ![Boron](mazes/boron.png?raw=true  "Boron")
 ## Beryllium
