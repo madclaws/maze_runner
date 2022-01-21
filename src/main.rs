@@ -5,7 +5,8 @@ mod cell;
 mod distances;
 mod grid;
 mod sidewinder;
-use aldous_broder::*;
+mod wilsons;
+
 use distances::*;
 use grid::*;
 use macroquad::prelude::*;
@@ -215,6 +216,24 @@ async fn main() {
                 );
                 next_frame().await
             }
+        }
+        8 => {
+            println!("Oxygen - Wilson's Algorithm");
+            let mut grid = Grid::new(2, 2);
+            grid.configure_cells();
+            wilsons::on(&mut grid);
+            let distances = grid.distances(0);
+            render(
+                &grid,
+                RenderMode::Walls,
+                &distances,
+                GOLD,
+                0.0,
+                0.0,
+                false,
+            );
+            next_frame().await
+
         }
         _ => panic!("Maze doesn't exist or element doesn't exist"),
     }
