@@ -219,21 +219,34 @@ async fn main() {
         }
         8 => {
             println!("Oxygen - Wilson's Algorithm");
-            let mut grid = Grid::new(2, 2);
+            let mut grid = Grid::new(13, 13);
             grid.configure_cells();
             wilsons::on(&mut grid);
-            let distances = grid.distances(0);
-            render(
-                &grid,
-                RenderMode::Walls,
-                &distances,
-                GOLD,
-                0.0,
-                0.0,
-                false,
-            );
-            next_frame().await
+            let distances = grid.distances(84);
+            loop {
+                clear_background(BLACK);
+                render(&grid, RenderMode::Walls, &distances, GOLD, 0.0, 0.0, false);
 
+                render(
+                    &grid,
+                    RenderMode::Background,
+                    &distances,
+                    GOLD,
+                    800.0,
+                    0.0,
+                    false,
+                );
+                render(
+                    &grid,
+                    RenderMode::Walls,
+                    &distances,
+                    BLACK,
+                    800.0,
+                    0.0,
+                    false,
+                );
+                next_frame().await
+            }
         }
         _ => panic!("Maze doesn't exist or element doesn't exist"),
     }

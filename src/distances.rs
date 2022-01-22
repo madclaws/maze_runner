@@ -65,8 +65,15 @@ impl Distances {
             Some(Color::new(bright / 255.0, dark / 255.0, dark / 255.0, 1.0))
         } else if color_range.g == 0.89 {
             Some(Color::new(dark / 255.0, bright / 255.0, dark / 255.0, 1.0))
-        } else {
+        } else if color_range.b == 0.47 {
             Some(Color::new(dark / 255.0, dark / 255.0, bright / 255.0, 1.0))
+        } else {
+            Some(Color::new(
+                255.0 / 255.0 * intensity,
+                215.0 / 255.0 * intensity,
+                0.0 / 255.0 * intensity,
+                1.0,
+            ))
         }
     }
 

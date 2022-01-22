@@ -12,6 +12,14 @@ Ex: `cargo run 3` will render lithium maze
 
 Will generate random mazes everytime :)
 ```
+
+## Oxygen
+> Using Wilson's algorithm for unbiased mazes
+
+**Unlike Aldous-Broder, Wilson's search for visited cells to plot a path and also use loop-erased random walk, to reduce mindless random walk**
+
+![oxygen](mazes/oxygen.png?raw=true  "oxygen")
+
 ## Nitrogen
 > Using Aldous-Broder algorithm for unbiased mazes
 
