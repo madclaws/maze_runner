@@ -12,6 +12,12 @@ Ex: `cargo run 3` will render lithium maze
 
 Will generate random mazes everytime :)
 ```
+## Fluorine
+> Using Hunt and kill algorithm
+
+**This is a biased algorithm, but its bias doesn't stand out like binary-tree or sidewinder**
+
+![fluorine](mazes/fluorine.png?raw=true  "fluorine")
 
 ## Oxygen
 > Using Wilson's algorithm for unbiased mazes

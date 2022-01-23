@@ -6,7 +6,7 @@ mod distances;
 mod grid;
 mod sidewinder;
 mod wilsons;
-
+mod hunt_and_kill;
 use distances::*;
 use grid::*;
 use macroquad::prelude::*;
@@ -232,6 +232,37 @@ async fn main() {
                     RenderMode::Background,
                     &distances,
                     GOLD,
+                    800.0,
+                    0.0,
+                    false,
+                );
+                render(
+                    &grid,
+                    RenderMode::Walls,
+                    &distances,
+                    BLACK,
+                    800.0,
+                    0.0,
+                    false,
+                );
+                next_frame().await
+            }
+        }
+        9 => {
+            println!("Flourine - Hunt and kill Algorithm");
+            let mut grid = Grid::new(13, 13);
+            grid.configure_cells();
+            hunt_and_kill::on(&mut grid);
+            let distances = grid.distances(84);
+            loop {
+                clear_background(BLACK);
+                render(&grid, RenderMode::Walls, &distances, SKYBLUE, 0.0, 0.0, false);
+
+                render(
+                    &grid,
+                    RenderMode::Background,
+                    &distances,
+                    SKYBLUE,
                     800.0,
                     0.0,
                     false,
