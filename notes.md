@@ -27,3 +27,8 @@
 
 - We need to Refactor the Rendering code.
 - For now we can implement sidewinder algorithm
+
+## 2022-01-25 01:36:44
+
+- We should implement trait for algorithms, so that we can reduce the code duplication
+when we calculate the deadends

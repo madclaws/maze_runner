@@ -19,6 +19,11 @@ pub struct Grid {
     pub grid: Vec<Cell>,
 }
 
+pub trait Algorithm {
+    fn on<'a>(&'a self, grid: &'a mut Grid);
+    fn get_name(&self) -> String;
+}
+
 impl Grid {
     pub fn new(rows: i32, cols: i32) -> Self {
         Grid {
@@ -180,7 +185,15 @@ impl Grid {
         println!("BREADCRUMBS\n {:?}", breadcrumbs);
         breadcrumbs
     }
-
+    pub fn get_deadend_cells(&self) -> Vec<i32> {
+        let mut deadend_cells: Vec<i32> = Vec::new();
+        for cell in &self.grid {
+            if cell.get_linked_cells().len() == 1 {
+                deadend_cells.push(cell.id);
+            }
+        }
+        deadend_cells
+    }
     /// Creates a 2D matrix of cells
     fn prepare_grid(rows: i32, cols: i32) -> Vec<Cell> {
         let mut grid: Vec<Cell> = Vec::new();

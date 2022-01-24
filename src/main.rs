@@ -4,12 +4,14 @@ mod binary_tree;
 mod cell;
 mod distances;
 mod grid;
+mod hunt_and_kill;
 mod sidewinder;
 mod wilsons;
-mod hunt_and_kill;
 use distances::*;
 use grid::*;
+use hunt_and_kill::*;
 use macroquad::prelude::*;
+mod deadend_count;
 
 enum RenderMode {
     Walls,
@@ -21,24 +23,27 @@ async fn main() {
     let args: Vec<String> = env::args().collect();
     println!("Mazes mazes everywhere..\n\n");
 
-    let maze_name = &args[1].parse::<u32>().unwrap();
+    let maze_name = &args[1].parse::<i32>().unwrap();
     let mut grid = Grid::new(10, 10);
     grid.configure_cells();
     match maze_name {
+        0 => {
+            deadend_count::count_deadends(13, 13);
+        }
         1 => {
             println!("Hydrogen - Binary tree\n");
-            binary_tree::on(&mut grid);
+            binary_tree::BinaryTree {}.on(&mut grid);
 
             grid.render();
         }
         2 => {
             println!("Helium - Sidewinder\n");
-            sidewinder::on(&mut grid);
+            sidewinder::SideWinder {}.on(&mut grid);
             grid.render();
         }
         3 => {
             println!("Lithium - Macroquad rendered sidewinder\n");
-            binary_tree::on(&mut grid);
+            binary_tree::BinaryTree {}.on(&mut grid);
             loop {
                 clear_background(BLACK);
 
@@ -56,7 +61,7 @@ async fn main() {
         }
         4 => {
             println!("Beryllium - Maze solver using Dijkstra's algorithm\n");
-            binary_tree::on(&mut grid);
+            binary_tree::BinaryTree {}.on(&mut grid);
             let distances = grid.distances(0);
             let breadcrumbs = grid.breadcrumbs(90, 0, &distances);
             loop {
@@ -78,7 +83,7 @@ async fn main() {
             println!("Boron - Hard maze using Dijkstra's algorithm\n");
             let mut grid = Grid::new(10, 10);
             grid.configure_cells();
-            binary_tree::on(&mut grid);
+            binary_tree::BinaryTree {}.on(&mut grid);
             let root = 0;
             let distances = grid.distances(root); // 0 is the starting_point
 
@@ -123,11 +128,11 @@ async fn main() {
             println!("Carbon - Coloring the maze\n");
             let mut grid = Grid::new(13, 13);
             grid.configure_cells();
-            sidewinder::on(&mut grid);
+            sidewinder::SideWinder {}.on(&mut grid);
 
             let mut binary_grid = Grid::new(13, 13);
             binary_grid.configure_cells();
-            binary_tree::on(&mut binary_grid);
+            binary_tree::BinaryTree {}.on(&mut binary_grid);
 
             let distances = grid.distances(84);
             let distances_binary = binary_grid.distances(84);
@@ -178,7 +183,7 @@ async fn main() {
             println!("Nitrogen - Aldous Brorder algorithm\n");
             let mut grid = Grid::new(13, 13);
             grid.configure_cells();
-            aldous_broder::on(&mut grid);
+            aldous_broder::AldousBroder {}.on(&mut grid);
 
             let distances = grid.distances(84);
 
@@ -221,7 +226,7 @@ async fn main() {
             println!("Oxygen - Wilson's Algorithm");
             let mut grid = Grid::new(13, 13);
             grid.configure_cells();
-            wilsons::on(&mut grid);
+            wilsons::Wilsons {}.on(&mut grid);
             let distances = grid.distances(84);
             loop {
                 clear_background(BLACK);
@@ -252,11 +257,19 @@ async fn main() {
             println!("Flourine - Hunt and kill Algorithm");
             let mut grid = Grid::new(13, 13);
             grid.configure_cells();
-            hunt_and_kill::on(&mut grid);
+            HuntAndKill {}.on(&mut grid);
             let distances = grid.distances(84);
             loop {
                 clear_background(BLACK);
-                render(&grid, RenderMode::Walls, &distances, SKYBLUE, 0.0, 0.0, false);
+                render(
+                    &grid,
+                    RenderMode::Walls,
+                    &distances,
+                    SKYBLUE,
+                    0.0,
+                    0.0,
+                    false,
+                );
 
                 render(
                     &grid,
