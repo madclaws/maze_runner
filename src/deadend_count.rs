@@ -6,8 +6,10 @@ use crate::aldous_broder::*;
 use crate::binary_tree::*;
 use crate::grid::*;
 use crate::hunt_and_kill::*;
+use crate::recursive_backtracker::*;
 use crate::sidewinder::*;
 use crate::wilsons::*;
+
 use std::collections::HashMap;
 
 pub fn count_deadends(maze_size: i32, iterations: i32) {
@@ -18,6 +20,7 @@ pub fn count_deadends(maze_size: i32, iterations: i32) {
         Box::new(SideWinder {}),
         Box::new(Wilsons {}),
         Box::new(HuntAndKill {}),
+        Box::new(RecursiveBacktracker {}),
     ];
 
     let mut deadend_average: HashMap<String, i32> = HashMap::new();

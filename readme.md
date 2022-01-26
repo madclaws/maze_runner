@@ -12,6 +12,13 @@ Ex: `cargo run 3` will render lithium maze
 
 Will generate random mazes everytime :)
 ```
+## Neon
+> Using Recursive backtracker algorithm
+
+**Same properties as `Hunt-and-kill`, but the method to recover from deadends is different**
+
+![neon](mazes/neon.png?raw=true  "neon")
+
 ## Fluorine
 > Using Hunt and kill algorithm
 

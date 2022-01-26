@@ -12,7 +12,7 @@ use grid::*;
 use hunt_and_kill::*;
 use macroquad::prelude::*;
 mod deadend_count;
-
+mod recursive_backtracker;
 enum RenderMode {
     Walls,
     Background,
@@ -276,6 +276,46 @@ async fn main() {
                     RenderMode::Background,
                     &distances,
                     SKYBLUE,
+                    800.0,
+                    0.0,
+                    false,
+                );
+                render(
+                    &grid,
+                    RenderMode::Walls,
+                    &distances,
+                    BLACK,
+                    800.0,
+                    0.0,
+                    false,
+                );
+                next_frame().await
+            }
+        }
+        10 => {
+            println!("Neon - Recursive backtracker Algorithm");
+            let mut grid = Grid::new(13, 13);
+            grid.configure_cells();
+            recursive_backtracker::RecursiveBacktracker {}.on(&mut grid);
+            let distances = grid.distances(84);
+            let neon_color = Color::new(1.0, 0.0, 153.0 / 255.0, 1.0);
+            loop {
+                clear_background(BLACK);
+                render(
+                    &grid,
+                    RenderMode::Walls,
+                    &distances,
+                    neon_color,
+                    0.0,
+                    0.0,
+                    false,
+                );
+
+                render(
+                    &grid,
+                    RenderMode::Background,
+                    &distances,
+                    neon_color,
                     800.0,
                     0.0,
                     false,
