@@ -32,3 +32,12 @@
 
 - We should implement trait for algorithms, so that we can reduce the code duplication
 when we calculate the deadends
+
+## 2022-01-28 01:49:32
+
+- <s>create a mask module</s>
+    - includes a 2d grid
+    - where each element is a bool
+    - setter and getter
+    - random_valid_position
+- Use mask struct in Grid struct.

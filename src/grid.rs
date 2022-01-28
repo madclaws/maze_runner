@@ -5,6 +5,8 @@
 */
 use crate::cell::*;
 use crate::distances::*;
+use crate::mask::*;
+
 use rand::Rng;
 /// Grid representation
 ///
@@ -30,6 +32,14 @@ impl Grid {
             rows,
             cols,
             grid: Grid::prepare_grid(rows, cols),
+        }
+    }
+
+    pub fn new_from_mask(mask: &Mask) -> Self {
+        Grid{
+            rows: mask.rows,
+            cols: mask.cols,
+            grid: Grid::prepare_grid_from_mask(mask)
         }
     }
 
@@ -200,6 +210,16 @@ impl Grid {
         for row in 0..rows {
             for col in 0..cols {
                 grid.push(Cell::new((row * cols) + col, row, col))
+            }
+        }
+        grid
+    }
+
+    fn prepare_grid_from_mask(mask: &Mask) -> Vec<Cell> {
+        let mut grid: Vec<Cell> = Vec::new();
+        for row in 0..mask.rows {
+            for col in 0..mask.cols {
+                grid.push(Cell::new((row * mask.cols) + col, row, col))
             }
         }
         grid

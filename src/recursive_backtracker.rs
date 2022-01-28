@@ -10,10 +10,9 @@ pub struct RecursiveBacktracker;
 impl Algorithm for RecursiveBacktracker {
     fn on(&self, grid: &mut Grid) {
         let mut stack: Vec<i32> = Vec::new();
-        let mut current_cell_id: Option<&i32> = None;
         stack.push(rand::thread_rng().gen_range(0..grid.grid.len()) as i32);
         while !stack.is_empty() {
-            current_cell_id = stack.last();
+            let current_cell_id: Option<&i32> = stack.last();
             let unvisited_neightbours: Vec<i32> = grid.grid[*current_cell_id.unwrap() as usize]
                 .get_neighbours()
                 .into_iter()

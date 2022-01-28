@@ -13,6 +13,8 @@ use hunt_and_kill::*;
 use macroquad::prelude::*;
 mod deadend_count;
 mod recursive_backtracker;
+mod mask;
+
 enum RenderMode {
     Walls,
     Background,
