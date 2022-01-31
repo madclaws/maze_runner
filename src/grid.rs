@@ -22,7 +22,7 @@ pub struct Grid {
 }
 
 pub trait Algorithm {
-    fn on<'a>(&'a self, grid: &'a mut Grid);
+    fn on<'a>(&'a self, grid: &'a mut Grid, start_cell: i32);
     fn get_name(&self) -> String;
 }
 
@@ -36,10 +36,10 @@ impl Grid {
     }
 
     pub fn new_from_mask(mask: &Mask) -> Self {
-        Grid{
+        Grid {
             rows: mask.rows,
             cols: mask.cols,
-            grid: Grid::prepare_grid_from_mask(mask)
+            grid: Grid::prepare_grid_from_mask(mask),
         }
     }
 
@@ -47,7 +47,7 @@ impl Grid {
         (self.rows * self.cols) as u32
     }
 
-    fn _get_random_cell(&self) -> Option<&Cell> {
+    pub fn get_random_cell(&self) -> Option<&Cell> {
         let rand_row = rand::thread_rng().gen_range(0..self.rows);
         let rand_col = rand::thread_rng().gen_range(0..self.rows);
         self.grid.get(self.get_index(rand_row, rand_col) as usize)
@@ -66,16 +66,19 @@ impl Grid {
         for row in 0..self.rows {
             for col in 0..self.cols {
                 let index = self.get_index(row, col) as usize;
-                if row - 1 > -1 {
+                if !self.grid[index].active {
+                    continue;
+                }
+                if row - 1 > -1 && self.grid[self.get_index(row - 1, col) as usize].active {
                     self.grid[index].north = Some(self.get_index(row - 1, col));
                 }
-                if row + 1 < self.rows {
+                if row + 1 < self.rows && self.grid[self.get_index(row + 1, col) as usize].active {
                     self.grid[index].south = Some(self.get_index(row + 1, col));
                 }
-                if col - 1 > -1 {
+                if col - 1 > -1 && self.grid[self.get_index(row, col - 1) as usize].active {
                     self.grid[index].west = Some(self.get_index(row, col - 1));
                 }
-                if col + 1 < self.cols {
+                if col + 1 < self.cols && self.grid[self.get_index(row, col + 1) as usize].active {
                     self.grid[index].east = Some(self.get_index(row, col + 1));
                 }
             }
@@ -219,7 +222,11 @@ impl Grid {
         let mut grid: Vec<Cell> = Vec::new();
         for row in 0..mask.rows {
             for col in 0..mask.cols {
-                grid.push(Cell::new((row * mask.cols) + col, row, col))
+                let mut cell = Cell::new((row * mask.cols) + col, row, col);
+                if !mask.get((row, col)) {
+                    cell.active = false;
+                }
+                grid.push(cell);
             }
         }
         grid

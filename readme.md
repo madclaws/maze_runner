@@ -12,6 +12,28 @@ Ex: `cargo run 3` will render lithium maze
 
 Will generate random mazes everytime :)
 ```
+
+## Sodium
+
+> ASCII Masks
+
+**We are rendering a Recursive backtracker maze with the below ascii pattern from a file**
+
+```
+X . . . . . . . . X
+. . . . X X . . . .
+. . . X X X X . . .
+. . . . X X . . . .
+X . . . . . . . . X
+X . . . . . . . . X
+. . . . X X . . . .
+. . . X X X X . . .
+. . . . X X . . . .
+X . . . . . . . . X
+```
+
+![sodium](mazes/sodium.png?raw=true  "sodium")
+
 ## Neon
 > Using Recursive backtracker algorithm
 

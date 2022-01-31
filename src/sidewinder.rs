@@ -9,7 +9,7 @@ use rand::Rng;
 pub struct SideWinder {}
 
 impl Algorithm for SideWinder {
-    fn on(&self, grid: &mut Grid) {
+    fn on(&self, grid: &mut Grid, _start_cell: i32) {
         let owned_grid = grid.grid.to_owned();
         for i in 0..grid.rows {
             let mut run: Vec<&Cell> = Vec::new();

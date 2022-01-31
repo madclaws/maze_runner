@@ -22,6 +22,7 @@ pub struct Cell {
     pub south: Option<i32>,
     pub west: Option<i32>,
     pub east: Option<i32>,
+    pub active: bool,
     links: HashMap<i32, bool>,
 }
 
@@ -35,6 +36,7 @@ impl Cell {
             south: None,
             east: None,
             west: None,
+            active: true,
             links: HashMap::new(),
         }
     }

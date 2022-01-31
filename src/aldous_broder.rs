@@ -11,7 +11,7 @@ use crate::grid::*;
 pub struct AldousBroder {}
 
 impl Algorithm for AldousBroder {
-    fn on(&self, grid: &mut Grid) {
+    fn on(&self, grid: &mut Grid, _start_cell: i32) {
         let mut current_cell_id: i32 = rand::thread_rng().gen_range(0..grid.grid.len()) as i32;
         let mut unvisited_cells = grid.grid.len() - 1;
 

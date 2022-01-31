@@ -1,16 +1,39 @@
-/* 
+/*
         Mask module
 */
 
-pub struct Mask{
+use std::fs;
+
+pub struct Mask {
     pub rows: i32,
     pub cols: i32,
-    pub grid: Vec<bool>
+    pub grid: Vec<bool>,
 }
 
 impl Mask {
     pub fn new(row: i32, col: i32) -> Self {
-        Mask{rows: row, cols: col, grid: vec![true; (row * col) as usize]}
+        Mask {
+            rows: row,
+            cols: col,
+            grid: vec![true; (row * col) as usize],
+        }
+    }
+
+    pub fn apply_pattern(&mut self) {
+        let pattern: String =
+            fs::read_to_string("/home/madclaws/labs/maze_runner/mazes/mask_a.txt")
+                .expect("Unable to load the pattern file");
+        let pattern_lines: Vec<&str> = pattern.split('\n').collect();
+        let mut pattern_cell_count = 0;
+        for pattern_line in &pattern_lines {
+            let cell_patterns: Vec<&str> = pattern_line.split(" ").collect();
+            for cell_pattern in &cell_patterns {
+                if cell_pattern == &"X" {
+                    self.grid[pattern_cell_count as usize] = false;
+                }
+                pattern_cell_count += 1;
+            }
+        }
     }
 
     pub fn set(&mut self, cell: (i32, i32), status: bool) {
@@ -24,9 +47,9 @@ impl Mask {
     pub fn get_random_index(&self) -> i32 {
         for (index, status) in self.grid.iter().enumerate() {
             if *status {
-                return index as i32
+                return index as i32;
             }
         }
-        return -1
+        return -1;
     }
 }

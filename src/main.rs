@@ -12,8 +12,10 @@ use grid::*;
 use hunt_and_kill::*;
 use macroquad::prelude::*;
 mod deadend_count;
-mod recursive_backtracker;
 mod mask;
+use mask::*;
+mod recursive_backtracker;
+use ::rand::*;
 
 enum RenderMode {
     Walls,
@@ -34,18 +36,18 @@ async fn main() {
         }
         1 => {
             println!("Hydrogen - Binary tree\n");
-            binary_tree::BinaryTree {}.on(&mut grid);
+            binary_tree::BinaryTree {}.on(&mut grid, 0);
 
             grid.render();
         }
         2 => {
             println!("Helium - Sidewinder\n");
-            sidewinder::SideWinder {}.on(&mut grid);
+            sidewinder::SideWinder {}.on(&mut grid, 0);
             grid.render();
         }
         3 => {
             println!("Lithium - Macroquad rendered sidewinder\n");
-            binary_tree::BinaryTree {}.on(&mut grid);
+            binary_tree::BinaryTree {}.on(&mut grid, 0);
             loop {
                 clear_background(BLACK);
 
@@ -63,7 +65,7 @@ async fn main() {
         }
         4 => {
             println!("Beryllium - Maze solver using Dijkstra's algorithm\n");
-            binary_tree::BinaryTree {}.on(&mut grid);
+            binary_tree::BinaryTree {}.on(&mut grid, 0);
             let distances = grid.distances(0);
             let breadcrumbs = grid.breadcrumbs(90, 0, &distances);
             loop {
@@ -85,7 +87,7 @@ async fn main() {
             println!("Boron - Hard maze using Dijkstra's algorithm\n");
             let mut grid = Grid::new(10, 10);
             grid.configure_cells();
-            binary_tree::BinaryTree {}.on(&mut grid);
+            binary_tree::BinaryTree {}.on(&mut grid, 0);
             let root = 0;
             let distances = grid.distances(root); // 0 is the starting_point
 
@@ -130,11 +132,11 @@ async fn main() {
             println!("Carbon - Coloring the maze\n");
             let mut grid = Grid::new(13, 13);
             grid.configure_cells();
-            sidewinder::SideWinder {}.on(&mut grid);
+            sidewinder::SideWinder {}.on(&mut grid, 0);
 
             let mut binary_grid = Grid::new(13, 13);
             binary_grid.configure_cells();
-            binary_tree::BinaryTree {}.on(&mut binary_grid);
+            binary_tree::BinaryTree {}.on(&mut binary_grid, 0);
 
             let distances = grid.distances(84);
             let distances_binary = binary_grid.distances(84);
@@ -185,7 +187,7 @@ async fn main() {
             println!("Nitrogen - Aldous Brorder algorithm\n");
             let mut grid = Grid::new(13, 13);
             grid.configure_cells();
-            aldous_broder::AldousBroder {}.on(&mut grid);
+            aldous_broder::AldousBroder {}.on(&mut grid, 0);
 
             let distances = grid.distances(84);
 
@@ -228,7 +230,7 @@ async fn main() {
             println!("Oxygen - Wilson's Algorithm");
             let mut grid = Grid::new(13, 13);
             grid.configure_cells();
-            wilsons::Wilsons {}.on(&mut grid);
+            wilsons::Wilsons {}.on(&mut grid, 0);
             let distances = grid.distances(84);
             loop {
                 clear_background(BLACK);
@@ -259,7 +261,7 @@ async fn main() {
             println!("Flourine - Hunt and kill Algorithm");
             let mut grid = Grid::new(13, 13);
             grid.configure_cells();
-            HuntAndKill {}.on(&mut grid);
+            HuntAndKill {}.on(&mut grid, 0);
             let distances = grid.distances(84);
             loop {
                 clear_background(BLACK);
@@ -298,7 +300,9 @@ async fn main() {
             println!("Neon - Recursive backtracker Algorithm");
             let mut grid = Grid::new(13, 13);
             grid.configure_cells();
-            recursive_backtracker::RecursiveBacktracker {}.on(&mut grid);
+            let grid_length = grid.grid.len();
+            recursive_backtracker::RecursiveBacktracker {}
+                .on(&mut grid, thread_rng().gen_range(0..grid_length) as i32);
             let distances = grid.distances(84);
             let neon_color = Color::new(1.0, 0.0, 153.0 / 255.0, 1.0);
             loop {
@@ -334,6 +338,31 @@ async fn main() {
                 next_frame().await
             }
         }
+        11 => {
+            println!("Sodium - Basic Masking");
+            let mut mask_grid = Mask::new(10, 10);
+            mask_grid.apply_pattern();
+            let mut grid = Grid::new_from_mask(&mask_grid);
+            grid.configure_cells();
+            let random_index = mask_grid.get_random_index();
+            recursive_backtracker::RecursiveBacktracker {}.on(&mut grid, random_index);
+            let distances = grid.distances(random_index);
+            let _neon_color = Color::new(1.0, 0.0, 153.0 / 255.0, 1.0);
+            loop {
+                clear_background(BLACK);
+                render(
+                    &grid,
+                    RenderMode::Background,
+                    &distances,
+                    GOLD,
+                    0.0,
+                    0.0,
+                    false,
+                );
+                render(&grid, RenderMode::Walls, &distances, BLACK, 0.0, 0.0, false);
+                next_frame().await;
+            }
+        }
         _ => panic!("Maze doesn't exist or element doesn't exist"),
     }
 }
@@ -359,6 +388,9 @@ fn render(
     }
     for row in 0..grid.rows {
         for col in 0..grid.cols {
+            if !grid.grid[(row * grid.cols + col) as usize].active {
+                continue;
+            }
             match render_mode {
                 RenderMode::Walls => {
                     let wall_config = (

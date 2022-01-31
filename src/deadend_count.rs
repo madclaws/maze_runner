@@ -10,6 +10,7 @@ use crate::recursive_backtracker::*;
 use crate::sidewinder::*;
 use crate::wilsons::*;
 
+use rand::Rng;
 use std::collections::HashMap;
 
 pub fn count_deadends(maze_size: i32, iterations: i32) {
@@ -30,7 +31,11 @@ pub fn count_deadends(maze_size: i32, iterations: i32) {
         for _iteration in 0..iterations {
             let mut grid = Grid::new(maze_size as i32, maze_size as i32);
             grid.configure_cells();
-            algorithm.on(&mut grid);
+            let grid_length = grid.grid.len();
+            algorithm.on(
+                &mut grid,
+                rand::thread_rng().gen_range(0..grid_length) as i32,
+            );
             let deadend_cells = grid.get_deadend_cells();
             deadend_cells_count.push(deadend_cells.len() as i32);
         }

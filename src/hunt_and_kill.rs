@@ -9,7 +9,7 @@ use rand::Rng;
 pub struct HuntAndKill;
 
 impl Algorithm for HuntAndKill {
-    fn on(&self, grid: &mut Grid) {
+    fn on(&self, grid: &mut Grid, _start_cell: i32) {
         let mut current_cell_id: Option<i32> =
             Some(rand::thread_rng().gen_range(0..grid.grid.len()) as i32);
 

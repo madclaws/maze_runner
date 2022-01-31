@@ -11,7 +11,7 @@ use crate::grid::*;
 pub struct Wilsons {}
 
 impl Algorithm for Wilsons {
-    fn on(&self, grid: &mut Grid) {
+    fn on(&self, grid: &mut Grid, _start_cell: i32) {
         let mut unvisited_cells: Vec<i32> = (0..(grid.cols * grid.rows)).collect();
         unvisited_cells.remove(rand::thread_rng().gen_range(0..unvisited_cells.len()));
 

@@ -7,7 +7,7 @@ use crate::grid::*;
 pub struct BinaryTree {}
 
 impl Algorithm for BinaryTree {
-    fn on(&self, grid: &mut Grid) {
+    fn on(&self, grid: &mut Grid, _start_cell: i32) {
         for cell in grid.grid.to_owned() {
             let mut neighbours: Vec<i32> = Vec::new();
             if let Some(cell_id) = cell.north {

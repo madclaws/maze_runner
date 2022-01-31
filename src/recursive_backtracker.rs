@@ -8,9 +8,10 @@ use rand::Rng;
 pub struct RecursiveBacktracker;
 
 impl Algorithm for RecursiveBacktracker {
-    fn on(&self, grid: &mut Grid) {
+    fn on(&self, grid: &mut Grid, _start_cell: i32) {
         let mut stack: Vec<i32> = Vec::new();
-        stack.push(rand::thread_rng().gen_range(0..grid.grid.len()) as i32);
+        // stack.push(rand::thread_rng().gen_range(0..grid.grid.len()) as i32);
+        stack.push(grid.get_random_cell().unwrap().id);
         while !stack.is_empty() {
             let current_cell_id: Option<&i32> = stack.last();
             let unvisited_neightbours: Vec<i32> = grid.grid[*current_cell_id.unwrap() as usize]
