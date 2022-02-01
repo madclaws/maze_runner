@@ -13,6 +13,18 @@ Ex: `cargo run 3` will render lithium maze
 Will generate random mazes everytime :)
 ```
 
+## Magnesium
+
+> Masking mazes by images
+
+**We are rendering a Recursive backtracker maze with the different images as masks**
+
+![mag_2](mazes/mag_2.png?raw=true  "mag_2")
+
+![mag_1](mazes/mag_1.png?raw=true  "mag_1")
+
+Reference images [maze_1](mazes/maze_text.png), [maze_2](mazes/spade.png), spade image credits [@prithvihv](https://github.com/prithvihv/art/blob/master/01-spade.xcf)
+
 ## Sodium
 
 > ASCII Masks

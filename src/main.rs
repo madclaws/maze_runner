@@ -369,20 +369,19 @@ async fn main() {
             println!("Magnesium -  Masking with images");
             let mut mask_grid = Mask::new(37, 50);
             mask_grid.apply_pattern_from_image();
-            // let mut grid = Grid::new(37, 50);
             let mut grid = Grid::new_from_mask(&mask_grid);
             grid.configure_cells();
             let random_index = mask_grid.get_random_index();
             recursive_backtracker::RecursiveBacktracker {}.on(&mut grid, random_index);
             let distances = grid.distances(random_index);
-            let _neon_color = Color::new(1.0, 0.0, 153.0 / 255.0, 1.0);
+            let _gzp_color = Color::new(51.0/255.0, 67.0/255.0, 151.0 / 255.0, 1.0);
             loop {
                 clear_background(BLACK);
                 render(
                     &grid,
                     RenderMode::Background,
                     &distances,
-                    GOLD,
+                    GREEN,
                     0.0,
                     0.0,
                     false,

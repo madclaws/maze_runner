@@ -4,6 +4,7 @@
 
 use std::fs;
 use image::io::Reader as ImageReader;
+use image::{GenericImage, GenericImageView, ImageBuffer, RgbImage};
 
 pub struct Mask {
     pub rows: i32,
@@ -39,16 +40,13 @@ impl Mask {
 
     pub fn apply_pattern_from_image(&mut self) {
         let img = ImageReader::open("/home/madclaws/labs/maze_runner/mazes/maze_text.png").unwrap().decode().unwrap();
-        // println!("IMAGE => {:?}", img.into_bytes());
-        let mut pattern_cell_count = 0;
-        println!("SIZE OF BYTES => {}", img.into_bytes().len()); 
-        // for pixel in img.into_bytes() {
-        //     println!("CURRENT_PIXEL {}", pixel);
-        //     if pixel == 0 {
-        //         self.grid[pattern_cell_count as usize] = false;
-        //     }
-        //     pattern_cell_count += 1;
-        // }
+        let pixel_vec = img.into_rgb32f().clone();
+
+        for (index, pixel) in pixel_vec.iter().step_by(3).enumerate() {
+            if *pixel == 0.0 {
+                self.grid[index as usize] = false;
+            }   
+        }
     }
 
     pub fn set(&mut self, cell: (i32, i32), status: bool) {

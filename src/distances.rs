@@ -56,7 +56,7 @@ impl Distances {
             return None;
         }
         let cell_distance = self.get_distance(cell_id).unwrap();
-        let intensity = (max_distance - cell_distance) as f32 / max_distance as f32;
+        let intensity =  (max_distance - cell_distance) as f32 / max_distance as f32;
         let dark = f32::round(255.0 * intensity);
         let bright = 128.0 + f32::round(127.0 * intensity);
 

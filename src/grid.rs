@@ -165,7 +165,7 @@ impl Grid {
             frontier = next_frontiers;
         }
         println!("Ending calculation of relative distance from the root\n\n");
-        println!("{:?}", distances);
+        // println!("{:?}", distances);
         distances
     }
 
