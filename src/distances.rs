@@ -7,7 +7,6 @@
 */
 
 use macroquad::color::Color;
-use rand::Rng;
 use std::collections::HashMap;
 
 #[derive(Debug)]

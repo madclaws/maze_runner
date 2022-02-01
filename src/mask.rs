@@ -3,6 +3,7 @@
 */
 
 use std::fs;
+use image::io::Reader as ImageReader;
 
 pub struct Mask {
     pub rows: i32,
@@ -26,7 +27,7 @@ impl Mask {
         let pattern_lines: Vec<&str> = pattern.split('\n').collect();
         let mut pattern_cell_count = 0;
         for pattern_line in &pattern_lines {
-            let cell_patterns: Vec<&str> = pattern_line.split(" ").collect();
+            let cell_patterns: Vec<&str> = pattern_line.split(' ').collect();
             for cell_pattern in &cell_patterns {
                 if cell_pattern == &"X" {
                     self.grid[pattern_cell_count as usize] = false;
@@ -34,6 +35,20 @@ impl Mask {
                 pattern_cell_count += 1;
             }
         }
+    }
+
+    pub fn apply_pattern_from_image(&mut self) {
+        let img = ImageReader::open("/home/madclaws/labs/maze_runner/mazes/maze_text.png").unwrap().decode().unwrap();
+        // println!("IMAGE => {:?}", img.into_bytes());
+        let mut pattern_cell_count = 0;
+        println!("SIZE OF BYTES => {}", img.into_bytes().len()); 
+        // for pixel in img.into_bytes() {
+        //     println!("CURRENT_PIXEL {}", pixel);
+        //     if pixel == 0 {
+        //         self.grid[pattern_cell_count as usize] = false;
+        //     }
+        //     pattern_cell_count += 1;
+        // }
     }
 
     pub fn set(&mut self, cell: (i32, i32), status: bool) {
@@ -50,6 +65,6 @@ impl Mask {
                 return index as i32;
             }
         }
-        return -1;
+        return -1
     }
 }

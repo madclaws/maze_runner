@@ -22,6 +22,8 @@ enum RenderMode {
     Background,
 }
 
+const CELL_SIZE: i32 = 20;
+
 #[macroquad::main(conf())]
 async fn main() {
     let args: Vec<String> = env::args().collect();
@@ -298,7 +300,7 @@ async fn main() {
         }
         10 => {
             println!("Neon - Recursive backtracker Algorithm");
-            let mut grid = Grid::new(13, 13);
+            let mut grid = Grid::new(25, 25);
             grid.configure_cells();
             let grid_length = grid.grid.len();
             recursive_backtracker::RecursiveBacktracker {}
@@ -363,6 +365,32 @@ async fn main() {
                 next_frame().await;
             }
         }
+        12 => {
+            println!("Magnesium -  Masking with images");
+            let mut mask_grid = Mask::new(37, 50);
+            mask_grid.apply_pattern_from_image();
+            // let mut grid = Grid::new(37, 50);
+            let mut grid = Grid::new_from_mask(&mask_grid);
+            grid.configure_cells();
+            let random_index = mask_grid.get_random_index();
+            recursive_backtracker::RecursiveBacktracker {}.on(&mut grid, random_index);
+            let distances = grid.distances(random_index);
+            let _neon_color = Color::new(1.0, 0.0, 153.0 / 255.0, 1.0);
+            loop {
+                clear_background(BLACK);
+                render(
+                    &grid,
+                    RenderMode::Background,
+                    &distances,
+                    GOLD,
+                    0.0,
+                    0.0,
+                    false,
+                );
+                render(&grid, RenderMode::Walls, &distances, BLACK, 0.0, 0.0, false);
+                next_frame().await;
+            }
+        }
         _ => panic!("Maze doesn't exist or element doesn't exist"),
     }
 }
@@ -376,7 +404,7 @@ fn render(
     v_offset: f32,
     render_text: bool,
 ) {
-    let cell_size: i32 = 50;
+    let cell_size: i32 = CELL_SIZE;
     let thickness = 3.0;
     let line_color = color;
     let x_offset = h_offset;
@@ -536,15 +564,15 @@ fn render_rects(bg_config: (i32, i32, i32, &Grid, &Distances, f32, f32, u32, Col
     let index = (row * grid.cols) + col;
 
     if let Some(color) = distances.get_background_color(max_distance, index, bg_config.8) {
-        draw_rectangle(x1 + x_offset, y1 + y_offset, 50.0, 50.0, color);
+        draw_rectangle(x1 + x_offset, y1 + y_offset, CELL_SIZE as f32, CELL_SIZE as f32, color);
     }
 }
 
 fn conf() -> Conf {
     Conf {
         window_title: String::from("Maze Runner"),
-        window_width: 100 * (50 + 13),
-        window_height: 100 * (50 + 13),
+        window_width: 100 * (CELL_SIZE + 13),
+        window_height: 100 * (CELL_SIZE + 13),
         fullscreen: false,
         ..Default::default()
     }
